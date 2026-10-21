@@ -4,7 +4,49 @@ Semantic segmentation of street-level photos into 34 classes (road, **sidewalk**
 vegetation, ...) on the [segments/sidewalk-semantic](https://huggingface.co/datasets/segments/sidewalk-semantic) dataset.
 Two models are compared: a **U-Net written from scratch** and a **U-Net with a pretrained ResNet-34 encoder**.
 
-<!-- RESULTS -->
+## Results
+
+Test split: 100 images never used for training or model selection (256×512 px). The best epoch was chosen by validation mIoU.
+
+| Model | Epochs | Best val mIoU | Test mIoU | Test pixel acc. | Test sidewalk IoU |
+|---|---|---|---|---|---|
+| U-Net (from scratch) | 60 | 27.7% | 25.5% | 81.3% | 83.4% |
+| U-Net + ResNet-34 encoder (ImageNet-pretrained) | 40 | 35.0% | 33.2% | 86.8% | 89.4% |
+
+Training curves, per-class IoU and sample predictions are in `results/unet/` and `results/resnet34_unet/`.
+
+**Takeaways**
+- The pretrained encoder gives about +7.7 mIoU points and +6 points of sidewalk IoU with fewer epochs, i.e. transfer learning matters a lot with only 800 training images.
+- The sidewalk class, the focus of this project, is segmented well by both models (83% and 89% IoU). Overall mIoU is low mainly because of rare and thin classes (poles, signs, etc.), which have few training examples.
+- Both models overfit moderately (the ResNet-34 model reaches train loss 0.18 vs. val loss 0.60), and the val/test sets contain only 100 images each, so small differences between runs are within noise; the gap between the two models is large enough to be meaningful.
+
+### Per-class IoU (test, %, selected classes)
+
+| Class | U-Net | ResNet-34 U-Net |
+|---|---|---|
+| sidewalk | 83.4 | 89.4 |
+| road | 62.9 | 73.2 |
+| cyclinglane | 57.2 | 71.5 |
+| curb | 41.6 | 56.1 |
+| crosswalk | 21.1 | 36.7 |
+| parkingdriveway | 29.2 | 42.8 |
+| car | 78.7 | 86.2 |
+| person | 42.3 | 64.1 |
+| bicycle | 4.3 | 38.4 |
+| building | 68.0 | 75.8 |
+| vegetation | 83.1 | 85.9 |
+| terrain | 73.4 | 77.7 |
+| sky | 92.1 | 93.7 |
+| pole | 26.2 | 42.8 |
+| fenceguardrail | 14.4 | 44.6 |
+
+Full table: `results/*/per_class_iou.md`. Classes absent from the test split (`railtrack`, `caravan`) are excluded from mIoU. The ResNet-34 model scores 0% IoU on 12 classes (rider, truck, bus, tramtrain, motorcycle, cartrailer, bridge, tunnel, stairs, trafficsign, trafficlight, unclear); most of these are rare in the dataset, so the model rarely or never predicts them. These zeros are what keeps mIoU at about 33% while sidewalk IoU is 89%. Class-balanced loss or more data would be the next step.
+
+![sample predictions](results/resnet34_unet/sample_predictions.png)
+
+Samples are the first 6 test images (not hand-picked): image, ground truth, prediction (sidewalk is pink).
+
+**Limitations:** single run, single seed, no hyperparameter tuning, low resolution (256×512).
 
 ## Dataset
 

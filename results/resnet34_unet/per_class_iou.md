@@ -1,0 +1,36 @@
+| class | IoU, % |
+|---|---|
+| road | 73.2 |
+| sidewalk | 89.37 |
+| crosswalk | 36.74 |
+| cyclinglane | 71.46 |
+| parkingdriveway | 42.76 |
+| railtrack | n/a |
+| curb | 56.08 |
+| person | 64.11 |
+| rider | 0.0 |
+| car | 86.18 |
+| truck | 0.0 |
+| bus | 0.0 |
+| tramtrain | 0.0 |
+| motorcycle | 0.0 |
+| bicycle | 38.36 |
+| caravan | n/a |
+| cartrailer | 0.0 |
+| building | 75.85 |
+| door | 7.7 |
+| wall | 32.42 |
+| fenceguardrail | 44.56 |
+| bridge | 0.0 |
+| tunnel | 0.0 |
+| stairs | 0.0 |
+| pole | 42.76 |
+| trafficsign | 0.0 |
+| trafficlight | 0.0 |
+| vegetation | 85.93 |
+| terrain | 77.71 |
+| sky | 93.72 |
+| ground | 13.53 |
+| dynamic | 6.72 |
+| static | 23.7 |
+| unclear | 0.0 |
