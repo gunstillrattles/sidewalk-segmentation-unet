@@ -74,8 +74,8 @@ def main(argv=None):
     crit = nn.CrossEntropyLoss(ignore_index=IGNORE_INDEX)
     scaler = torch.amp.GradScaler(enabled=device.type == "cuda")
 
-    out = Path(args.out); out.mkdir(exist_ok=True)
-    res = Path(args.results); res.mkdir(exist_ok=True)
+    out = Path(args.out); out.mkdir(parents=True, exist_ok=True)
+    res = Path(args.results); res.mkdir(parents=True, exist_ok=True)
     hist = {"train_loss": [], "val_loss": [], "val_miou": [], "val_pixel_acc": []}
     best = -1.0
     for ep in range(1, args.epochs + 1):
