@@ -62,7 +62,7 @@ def main(argv=None):
                "per_class_IoU": {c: (None if np.isnan(v) else round(float(v) * 100, 2)) for c, v in zip(CLASSES, iou)}}
     print(json.dumps({k: v for k, v in metrics.items() if k != "per_class_IoU"}, indent=2))
 
-    res = Path(args.results); res.mkdir(exist_ok=True)
+    res = Path(args.results); res.mkdir(parents=True, exist_ok=True)
     (res / "metrics.json").write_text(json.dumps(metrics, indent=2, ensure_ascii=False))
     rows = ["| class | IoU, % |", "|---|---|"] + [f"| {c} | {'n/a' if v is None else v} |" for c, v in metrics["per_class_IoU"].items()]
     (res / "per_class_iou.md").write_text("\n".join(rows))
